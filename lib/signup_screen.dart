@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 
@@ -14,8 +13,8 @@ class _SignUpScreenState extends State<SignUpScreen>{
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   String _email = "";
   String _password = "";
@@ -35,11 +34,11 @@ class _SignUpScreenState extends State<SignUpScreen>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign Up'),
+        title: const Text('Sign Up'),
       ),
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Form(
             key: _formKey,
             child: Column(
@@ -48,7 +47,7 @@ class _SignUpScreenState extends State<SignUpScreen>{
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Email",
                   ),
@@ -64,11 +63,11 @@ class _SignUpScreenState extends State<SignUpScreen>{
                     });
                   },
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _passwordController,
                   obscureText: true,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Password",
                   ),
@@ -84,14 +83,14 @@ class _SignUpScreenState extends State<SignUpScreen>{
                     });
                   },
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                     onPressed: (){
                       if (_formKey.currentState!.validate()){
                         _handleSignUp();
                       }
                     },
-                    child: Text("Sign Up"),
+                    child: const Text("Sign Up"),
                 )
               ],
             ),

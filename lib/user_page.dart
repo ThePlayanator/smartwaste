@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class UserPage extends StatefulWidget{
+  const UserPage({super.key});
+
   @override
   State<UserPage> createState()=> _UserPageState();
 }
@@ -71,20 +73,20 @@ class _UserPageState extends State<UserPage>{
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add User'),
+        title: const Text('Add User'),
       ),
       body: ListView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         children: <Widget>[
           TextField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: "Name",
             ),
             controller: nameController,
           ),
           const SizedBox(height: 24),
           TextField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: "Age",
             ),
             controller: ageController,
@@ -92,7 +94,7 @@ class _UserPageState extends State<UserPage>{
           ),
           const SizedBox(height: 24),
           TextField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: "Date",
             ),
             keyboardType: TextInputType.datetime,
@@ -114,7 +116,7 @@ class _UserPageState extends State<UserPage>{
 
                 Navigator.pop(context);
               },
-              child: Text('Create'),
+              child: const Text('Create'),
           ),
         ],
       ),

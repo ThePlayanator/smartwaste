@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:smartwaste/user_page.dart';
 
 class MainPage extends StatefulWidget{
+  const MainPage({super.key});
+
   @override
   State<MainPage> createState()=> _MainPageState();
 }
@@ -43,7 +45,7 @@ class _MainPageState extends State<MainPage>{
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text('All Users'),
+        title: const Text('All Users'),
       ),
       body: StreamBuilder( //real time update
         stream: readUsers(),
@@ -57,15 +59,15 @@ class _MainPageState extends State<MainPage>{
               children: users.map(buildUser).toList(),
             );
           } else {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
         }
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: (){
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context)=> UserPage(),
+              builder: (context)=> const UserPage(),
           ),
           );
         },
@@ -80,7 +82,7 @@ class _MainPageState extends State<MainPage>{
   snapshot.docs.map((doc) => User.fromJson(doc.data())).toList());
 
   Widget buildUser(User user) => ListTile(
-    leading: CircleAvatar(child: Text('${user.age}')),
+    leading: CircleAvatar(child: Text(user.age)),
     title: Text(user.name),
     subtitle: Text(user.birthday.toIso8601String()),
   );

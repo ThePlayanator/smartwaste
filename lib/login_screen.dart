@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:smartwaste/welcome.dart';
 
@@ -14,8 +13,8 @@ class _LoginScreenState extends State<LoginScreen>{
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   String _email = "";
   String _password = "";
@@ -26,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen>{
           email: _email, password: _password
       );
       print("User Logged In: ${userCredential.user!.email}");
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Welcome(),));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const Welcome(),));
     } catch (e){
       print("Error During Logged In: $e");
     }
@@ -36,11 +35,11 @@ class _LoginScreenState extends State<LoginScreen>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: const Text('Login'),
       ),
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Form(
             key: _formKey,
             child: Column(
@@ -49,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen>{
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Email",
                   ),
@@ -65,11 +64,11 @@ class _LoginScreenState extends State<LoginScreen>{
                     });
                   },
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _passwordController,
                   obscureText: true,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Password",
                   ),
@@ -85,14 +84,14 @@ class _LoginScreenState extends State<LoginScreen>{
                     });
                   },
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: (){
                     if (_formKey.currentState!.validate()){
                       _handleLogin();
                     }
                   },
-                  child: Text("Login"),
+                  child: const Text("Login"),
                 )
               ],
             ),

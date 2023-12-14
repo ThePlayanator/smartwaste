@@ -1,6 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class UpDelScreen extends StatefulWidget {
@@ -16,7 +14,7 @@ class _UpDelScreenState extends State<UpDelScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Firebase CRUD Update & Delete'),
+        title: const Text('Firebase CRUD Update & Delete'),
         backgroundColor: Colors.cyan,
       ),
       body: Container(
@@ -45,7 +43,7 @@ class _UpDelScreenState extends State<UpDelScreen> {
                 docUser.delete(); // Delete whole data based on specified c&d
                 // guna docUser.set -> set all fields into apa yang kita nak
               },
-              child: Text('Update'),
+              child: const Text('Update'),
             ),
           ],
         ),
