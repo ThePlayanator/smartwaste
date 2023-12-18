@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class UserPage extends StatefulWidget{
+class UserPage extends StatefulWidget {
   const UserPage({super.key});
 
   @override
-  State<UserPage> createState()=> _UserPageState();
+  State<UserPage> createState() => _UserPageState();
 }
 
-class User{
+class User {
   String id;
   final String name;
   final String age;
@@ -19,17 +19,17 @@ class User{
     required this.name,
     required this.age,
     required this.birthday,
-});
+  });
 
   Map<String, dynamic> toJson() => {
-    'id' : id,
-    'name' : name,
-    'age' : age,
-    'birthday' : birthday,
-  };
+        'id': id,
+        'name': name,
+        'age': age,
+        'birthday': birthday,
+      };
 }
 
-class _UserPageState extends State<UserPage>{
+class _UserPageState extends State<UserPage> {
   final TextEditingController dateController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
@@ -43,19 +43,19 @@ class _UserPageState extends State<UserPage>{
     );
 
     final TimeOfDay? pickedTime = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.now(),
+      context: context,
+      initialTime: TimeOfDay.now(),
     );
-    if (pickedDate!= null && pickedTime != null){
+    if (pickedDate != null && pickedTime != null) {
       setState(() {
         dateController.text =
-        "${pickedDate.year}-${pickedDate.month.toString().padLeft(2,'0')}-${pickedDate.day.toString().padLeft(2,'0')} "
-            "${pickedTime.hour.toString().padLeft(2,'0')}:${pickedTime.minute.toString().padLeft(2,'0')}:00";
+            "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')} "
+            "${pickedTime.hour.toString().padLeft(2, '0')}:${pickedTime.minute.toString().padLeft(2, '0')}:00";
       });
     }
   }
 
-  Future createUser(User user) async{
+  Future createUser(User user) async {
     final docUser = FirebaseFirestore.instance.collection('users').doc();
     user.id = docUser.id;
 
@@ -67,10 +67,8 @@ class _UserPageState extends State<UserPage>{
     dateController.clear();
   }
 
-
-
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add User'),
@@ -104,19 +102,22 @@ class _UserPageState extends State<UserPage>{
           ),
           const SizedBox(height: 20),
           ElevatedButton(
-              onPressed: (){
-                final user = User(
-                  name : nameController.text,
-                  age : ageController.text,
-                  birthday : DateTime.parse(dateController.text),
+            onPressed: () {
+              final user = User(
+                name: nameController.text,
+                age: ageController.text,
+                birthday: DateTime.parse(dateController.text),
+              );
 
-                );
+              createUser(user);
 
-                createUser(user);
-
-                Navigator.pop(context);
-              },
-              child: const Text('Create'),
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('User Created Successfully'),
+                ),
+              );
+            },
+            child: const Text('Create'),
           ),
         ],
       ),

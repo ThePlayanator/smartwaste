@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:smartwaste/homepage.dart';
+import 'package:smartwaste/model/bin_page.dart';
+import 'package:smartwaste/user_page.dart';
 import 'package:smartwaste/view/detailed_status.dart';
 //import 'package:smartwaste/welcome.dart';
 import 'firebase_options.dart';
@@ -21,7 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: detailedStatusPage(),
+      home: BinPage(),
     );
   }
 }

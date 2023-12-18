@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:smartwaste/view/weight_graph.dart';
@@ -16,17 +17,46 @@ class _detailedStatusPage extends State<detailedStatusPage> {
       "https://api.thingspeak.com/channels/2364486/fields/1/last.json?api_key=2WBJ4ZYNMCJCAFC0&results";
   dynamic temperature;
 
-  /*final String urlW =
+  // URL for latest Weight data
+  final String urlW =
       "https://api.thingspeak.com/channels/2364486/fields/2/last.json?api_key=2WBJ4ZYNMCJCAFC0&results";
-  List? weight;*/
+  dynamic weight;
+
+  // Create a timer that updates the data every second
+  late Timer timer;
 
   @override
   void initState() {
     super.initState();
-    this.getJsonData();
+
+    // Initialize the timer
+    timer = Timer.periodic(Duration(seconds: 1), (timer){
+      // Fetch latest data of temperature and weight
+      if (mounted){
+        getJsonDataT().then((resultT) {
+          setState(() {
+            temperature = resultT;
+          });
+
+          getJsonDataW().then((resultW) {
+            setState(() {
+              weight = resultW;
+            });
+          });
+        });
+      }
+    });
   }
 
-  Future<String> getJsonData() async {
+  @override
+  void dispose(){
+    // Cancel the timer when the widget is disposed
+    timer.cancel();
+    super.dispose();
+  }
+
+
+  Future<String> getJsonDataT() async {
     try {
       var response = await http
           .get(Uri.parse(urlT), headers: {"Accept": "application/json"});
@@ -50,7 +80,34 @@ class _detailedStatusPage extends State<detailedStatusPage> {
       print("Error fetching data: $e");
     }
 
-    return "Success";
+    return temperature;
+  }
+
+  Future<String> getJsonDataW() async {
+    try {
+      var response = await http
+          .get(Uri.parse(urlW), headers: {"Accept": "application/json"});
+
+      if (response.statusCode == 200) {
+        var convertDataToJson = jsonDecode(response.body);
+
+        // Ensure the response contains the expected field name 'field1'
+        if (convertDataToJson.containsKey('field2')) {
+          weight = convertDataToJson['field2'];
+        } else {
+          // Handle the case where 'field1' is not present in the response
+          print("Field 'field2' not found in API response");
+        }
+      } else {
+        // Handle HTTP error
+        print("HTTP Error: ${response.statusCode}");
+      }
+    } catch (e) {
+      // Handle other errors
+      print("Error fetching data: $e");
+    }
+
+    return weight;
   }
 
   @override
@@ -136,6 +193,7 @@ class _detailedStatusPage extends State<detailedStatusPage> {
                 MaterialPageRoute(builder: (context) => const WeightAppPage()),
               );*/
               print('CardWeight tapped!');
+              print(weight);
               // Handle tap for CardWeight
             },
             child: Card(
@@ -154,9 +212,11 @@ class _detailedStatusPage extends State<detailedStatusPage> {
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        Text(
-                          'Display Weight Level',
-                          style: TextStyle(fontSize: 16),
+                        Center(
+                          child: Text(
+                            '${weight} (g)',
+                            style: TextStyle(fontSize: 16),
+                          ),
                         ),
                       ],
                     ),
@@ -189,7 +249,7 @@ class _detailedStatusPage extends State<detailedStatusPage> {
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          '$temperature (C)',
+                          '${temperature} °C',
                           style: TextStyle(fontSize: 16),
                         ),
                       ],
