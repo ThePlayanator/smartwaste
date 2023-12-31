@@ -30,9 +30,9 @@ class _detailedStatusPage extends State<detailedStatusPage> {
     super.initState();
 
     // Initialize the timer
-    timer = Timer.periodic(Duration(seconds: 1), (timer){
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
       // Fetch latest data of temperature and weight
-      if (mounted){
+      if (mounted) {
         getJsonDataT().then((resultT) {
           setState(() {
             temperature = resultT;
@@ -49,12 +49,11 @@ class _detailedStatusPage extends State<detailedStatusPage> {
   }
 
   @override
-  void dispose(){
+  void dispose() {
     // Cancel the timer when the widget is disposed
     timer.cancel();
     super.dispose();
   }
-
 
   Future<String> getJsonDataT() async {
     try {
@@ -116,9 +115,9 @@ class _detailedStatusPage extends State<detailedStatusPage> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('BIN STATUS'),
-        backgroundColor: Colors.amber,
+        backgroundColor: Colors.green,
       ),
-      backgroundColor: Colors.amberAccent,
+      backgroundColor: Colors.greenAccent,
       body: ListView(
         children: [
           GestureDetector(
@@ -131,20 +130,26 @@ class _detailedStatusPage extends State<detailedStatusPage> {
               child: Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+
                   children: [
                     Icon(Icons.location_on, color: Colors.red, size: 60.0),
+
                     SizedBox(height: 16),
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+
                       children: [
                         Text(
                           'Location',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        Text(
-                          'Display Location',
-                          style: TextStyle(fontSize: 16),
+                        Center(
+                          child: Text(
+                            'Fakulti Teknologi Maklumat dan Komu',
+                            style: TextStyle(fontSize: 16),
+                          ),
                         ),
                       ],
                     ),
@@ -163,22 +168,25 @@ class _detailedStatusPage extends State<detailedStatusPage> {
               child: Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                 // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Icon(Icons.restore_from_trash,
                         color: Colors.red, size: 60.0),
                     SizedBox(height: 16),
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Distance Level',
+                          'Full Level',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          'Display Distance',
-                          style: TextStyle(fontSize: 16),
-                        ),
+                            '20 (cm)',
+                            style: TextStyle(fontSize: 16),
+                          ),
+
                       ],
                     ),
                   ],
@@ -201,23 +209,25 @@ class _detailedStatusPage extends State<detailedStatusPage> {
               child: Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                 // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Icon(Icons.scale_outlined, color: Colors.red, size: 60.0),
                     SizedBox(height: 16),
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'Current Weight Level',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
                         Center(
                           child: Text(
+                            'Weight Level',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Text(
                             '${weight} (g)',
                             style: TextStyle(fontSize: 16),
                           ),
-                        ),
                       ],
                     ),
                   ],
@@ -236,15 +246,17 @@ class _detailedStatusPage extends State<detailedStatusPage> {
               child: Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Icon(Icons.local_fire_department,
                         color: Colors.red, size: 60.0),
                     SizedBox(height: 16),
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Current Temperature Level',
+                          'Temperature Level',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),

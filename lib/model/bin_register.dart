@@ -1,10 +1,6 @@
-import 'dart:convert';
-
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import '../firebase_options.dart';
+import 'package:smartwaste/view/detailed_status.dart';
 
 class BinPage extends StatefulWidget {
   const BinPage({super.key});
@@ -92,8 +88,12 @@ class _BinPage extends State<BinPage> {
 
           GestureDetector(
             onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const detailedStatusPage()),
+              );
               // Handle tap for CardLocation
-              print('CardLocation tapped!');
+              print('Bin List Tapped!');
             },
             child: Card(
               elevation: 4,
@@ -102,12 +102,12 @@ class _BinPage extends State<BinPage> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.location_on, color: Colors.red, size: 60.0),
+                    Icon(Icons.delete_outline, color: Colors.blue, size: 60.0),
                     SizedBox(height: 16),
                     Column(
                       children: [
                         Text(
-                          'Location',
+                          'BIN 01',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),

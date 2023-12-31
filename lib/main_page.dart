@@ -1,3 +1,4 @@
+/*
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:smartwaste/user_page.dart';
@@ -47,10 +48,11 @@ class _MainPageState extends State<MainPage>{
       appBar: AppBar(
         title: const Text('All Users'),
       ),
-      body: StreamBuilder( //real time update
-        stream: readUsers(),
+      body: FutureBuilder<User?>( //real time update
+        future: readUser(),
         builder: (context, snapshot){
-          if (snapshot.hasError){
+*/
+/* if (snapshot.hasError){
             return Text('Something went wrong! ${snapshot.error}');
           } else if (snapshot.hasData){
             final users = snapshot.data!;
@@ -60,6 +62,24 @@ class _MainPageState extends State<MainPage>{
             );
           } else {
             return const Center(child: CircularProgressIndicator());
+          }*//*
+*/
+/*
+*//*
+
+*/
+/*
+
+          if (snapshot.hasError){
+            return Text('Something went wrong! ${snapshot.error}');
+          } else if (snapshot.hasData){
+            final user = snapshot.data;
+
+            return user == null
+                ? Center(child: Text('No User'))
+                : buildUser(user);
+          } else {
+            return Center(child: CircularProgressIndicator());
           }
         }
       ),
@@ -81,10 +101,23 @@ class _MainPageState extends State<MainPage>{
       .map((snapshot) =>
   snapshot.docs.map((doc) => User.fromJson(doc.data())).toList());
 
+  Future<User?> readUser() async {
+    // Get single document by ID
+    final docUser = FirebaseFirestore.instance
+        .collection('users')
+        .doc('w6o5gWq4vqaZC3XpugZL');
+    final snapshot= await docUser.get();
+
+    if (snapshot.exists){
+      return User.fromJson(snapshot.data()!);
+    }
+  }
+
   Widget buildUser(User user) => ListTile(
     leading: CircleAvatar(child: Text(user.age)),
     title: Text(user.name),
     subtitle: Text(user.birthday.toIso8601String()),
   );
 
-}
+}*/
+

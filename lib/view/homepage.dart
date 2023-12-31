@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smartwaste/view/detailed_status.dart';
+import 'package:smartwaste/model/bin_register.dart';
+import 'package:smartwaste/view/settings.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,15 +19,8 @@ class _HomePage extends State<HomePage> {
       'Index 0: Home',
       style: optionStyle,
     ),
-    detailedStatusPage(),
-    Text(
-      'Index 2: Feedback',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 3: Settings',
-      style: optionStyle,
-    ),
+    BinPage(),
+    SettingsPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -39,7 +33,7 @@ class _HomePage extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('BottomNavigationBar Sample'),
+        title: const Text('Smart Waste'),
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -55,16 +49,12 @@ class _HomePage extends State<HomePage> {
             label: 'Bin',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.feedback_outlined),
-            label: 'Feedback',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.settings_outlined),
             label: 'Settings',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Colors.lightGreenAccent[800],
         showSelectedLabels: true,
         showUnselectedLabels: true,
         onTap: _onItemTapped,

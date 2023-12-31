@@ -55,7 +55,7 @@ class _UserPageState extends State<UserPage> {
     }
   }
 
-  Future createUser(User user) async {
+  Future createNewUser(User user) async {
     final docUser = FirebaseFirestore.instance.collection('users').doc();
     user.id = docUser.id;
 
@@ -109,7 +109,7 @@ class _UserPageState extends State<UserPage> {
                 birthday: DateTime.parse(dateController.text),
               );
 
-              createUser(user);
+              createNewUser(user);
 
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
