@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:smartwaste/view/homepage.dart';
-import 'package:smartwaste/login_page.dart';
+import 'package:smartwaste/view/user_login.dart';
 import 'package:smartwaste/main_page.dart';
-import 'package:smartwaste/model/bin_register.dart';
+import 'package:smartwaste/view/bin_register.dart';
 import 'package:smartwaste/view/detailed_status.dart';
 import 'package:smartwaste/view/user_register.dart';
 //import 'package:smartwaste/welcome.dart';
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: UserRegisterView(),
+      home: LoginPage(),
     );
   }
 }

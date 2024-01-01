@@ -30,17 +30,17 @@ class UserPageController {
       } else {
         print('Collection is not empty.');
         String leading = "U";
-        int idplacholder=0;
+        int idplacholder = 0;
 
         // Access the latest document
         QuerySnapshot latestDocument = await FirebaseFirestore.instance
-        .collection('users')
-        .orderBy('id', descending: true)
-        .limit(1)
-        .get();
+            .collection('users')
+            .orderBy('id', descending: true)
+            .limit(1)
+            .get();
 
         DocumentSnapshot latestData = latestDocument.docs.first;
-        Map<String,dynamic> data = latestData.data() as Map<String,dynamic>;
+        Map<String, dynamic> data = latestData.data() as Map<String, dynamic>;
 
         String latestID = data['id'];
         print(latestID);
@@ -51,9 +51,9 @@ class UserPageController {
         RegExp regExp = RegExp(r'\d+');
         Match? match = regExp.firstMatch(latestID);
 
-        if (match!=null){
+        if (match != null) {
           String numericPartString = match.group(0)!;
-          idplacholder = int.parse(numericPartString)+1;
+          idplacholder = int.parse(numericPartString) + 1;
         } else {
           print('No numeric part found in the id.');
         }
@@ -82,4 +82,55 @@ class UserPageController {
     final json = user.toJson();
     await docUser.doc(id).set(json);
   }
+
+  // Handles user login
+  Future<bool> loginUser(
+      {required String username, required String password}) async {
+    try {
+      QuerySnapshot query = await FirebaseFirestore.instance
+          .collection('users')
+          .where('username', isEqualTo: username)
+          .where('password', isEqualTo: password)
+          .get();
+
+      if (query.docs.isNotEmpty) {
+        // User found, perform login logic
+        print('Login successful!');
+        return true;
+      } else {
+        // User not found, show an error message
+        print('Invalid username or password');
+        return false;
+      }
+    } catch (e) {
+      print('Error during login: $e');
+      return false;
+    }
+  }
+
+  Future<String> getUserLoginId(
+      {required String username, required String password}) async {
+    try {
+      QuerySnapshot query = await FirebaseFirestore.instance
+          .collection('users')
+          .where('username', isEqualTo: username)
+          .where('password', isEqualTo: password)
+          .get();
+
+      if (query.docs.isNotEmpty) {
+        // User ID found, get the 'id' field value
+        String loginId = query.docs.first.get('id');
+        print('Login successful! User ID: $loginId');
+        return loginId;
+      } else {
+        // User ID not found, show an error message
+        print('Invalid username or password');
+        return 'Invalid username or password';
+      }
+    } catch (e) {
+      print('Error during login: $e');
+      return 'Failed to retrieve user ID';
+    }
+  }
+
 }

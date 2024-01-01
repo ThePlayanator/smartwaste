@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:smartwaste/model/bin_register.dart';
 import 'package:smartwaste/view/settings.dart';
 
+import 'bin_list.dart';
+
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final String loginId;
+
+  const HomePage({super.key, required this.loginId});
 
   @override
   State<HomePage> createState() =>
@@ -14,15 +17,16 @@ class _HomePage extends State<HomePage> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    BinPage(),
-    SettingsPage(),
-  ];
-
+  List<Widget> get _widgetOptions {
+    return [
+      Text(
+        'Index 0: Home',
+        style: optionStyle,
+      ),
+      BinPage(loginId: widget.loginId),
+      SettingsPage(),
+    ];
+  }
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -54,7 +58,7 @@ class _HomePage extends State<HomePage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.lightGreenAccent[800],
+        selectedItemColor: Colors.lightGreenAccent,
         showSelectedLabels: true,
         showUnselectedLabels: true,
         onTap: _onItemTapped,

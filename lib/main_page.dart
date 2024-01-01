@@ -51,8 +51,7 @@ class _MainPageState extends State<MainPage>{
       body: FutureBuilder<User?>( //real time update
         future: readUser(),
         builder: (context, snapshot){
-*/
-/* if (snapshot.hasError){
+ if (snapshot.hasError){
             return Text('Something went wrong! ${snapshot.error}');
           } else if (snapshot.hasData){
             final users = snapshot.data!;
@@ -62,13 +61,9 @@ class _MainPageState extends State<MainPage>{
             );
           } else {
             return const Center(child: CircularProgressIndicator());
-          }*//*
-*/
-/*
-*//*
+          }
 
-*/
-/*
+
 
           if (snapshot.hasError){
             return Text('Something went wrong! ${snapshot.error}');
@@ -119,5 +114,6 @@ class _MainPageState extends State<MainPage>{
     subtitle: Text(user.birthday.toIso8601String()),
   );
 
-}*/
+}
 
+*/

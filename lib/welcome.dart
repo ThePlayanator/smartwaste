@@ -1,6 +1,6 @@
+/*
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:smartwaste/login_screen.dart';
 
 class Welcome extends StatefulWidget{
   const Welcome({super.key});
@@ -38,4 +38,4 @@ class _WelcomeState extends State<Welcome>{
       ),
     );
   }
-}
+}*/

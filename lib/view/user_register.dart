@@ -17,6 +17,8 @@ class _UserRegisterViewState extends State<UserRegisterView> {
 
   final UserPageController _newUserController = UserPageController();
 
+  String errorMessage = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,44 +30,50 @@ class _UserRegisterViewState extends State<UserRegisterView> {
         children: <Widget>[
           const SizedBox(height: 24),
           TextField(
-            decoration: const InputDecoration(
-              labelText: "Username",
-            ),
+            decoration: const InputDecoration(labelText: "Username"),
             controller: usernameController,
           ),
           const SizedBox(height: 24),
           TextField(
-            decoration: const InputDecoration(
-              labelText: "Password",
-            ),
+            decoration: const InputDecoration(labelText: "Password"),
             controller: passwordController,
           ),
           const SizedBox(height: 24),
           TextField(
-            decoration: const InputDecoration(
-              labelText: "Fullname",
-            ),
+            decoration: const InputDecoration(labelText: "Fullname"),
             controller: fullnameController,
           ),
           const SizedBox(height: 24),
           TextField(
-            decoration: const InputDecoration(
-              labelText: "Identification Card (IC) Number",
-            ),
+            decoration: const InputDecoration(labelText: "IC Number"),
             keyboardType: TextInputType.number,
             controller: icController,
           ),
           const SizedBox(height: 24),
           TextField(
-            decoration: const InputDecoration(
-              labelText: "Phone Number",
-            ),
+            decoration: const InputDecoration(labelText: "Phone Number"),
             keyboardType: TextInputType.number,
             controller: phoneNumberController,
           ),
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
+
+              if (usernameController.text.isEmpty || passwordController.text.isEmpty
+              || fullnameController.text.isEmpty || icController.text.isEmpty ||
+              phoneNumberController.text.isEmpty)
+              {
+                setState(() {
+                  errorMessage = 'All fields cannot be empty.';
+                });
+                return;
+              }
+
+              // Clear any previous error message
+              setState(() {
+                errorMessage = '';
+              });
+
               _newUserController.createUser(
                   username: usernameController.text,
                   password: passwordController.text,

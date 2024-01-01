@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:smartwaste/view/bin_register.dart';
 
 import 'detailed_status.dart';
 
 class BinPage extends StatefulWidget {
-  const BinPage({super.key});
+  final String loginId;
+
+  const BinPage({super.key, required this.loginId});
 
   @override
   State<BinPage> createState() => _BinPage();
@@ -21,7 +24,10 @@ class _BinPage extends State<BinPage> {
             padding: EdgeInsets.all(16.0),
             child: ElevatedButton(
                 onPressed: (){
-
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => BinRegisterPage(loginId: widget.loginId)),
+                  );
                 },
                 child: Text('Register New Bin')),
           ),
