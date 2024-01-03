@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:smartwaste/controller/bin_controller.dart';
 import 'package:smartwaste/view/bin_register.dart';
+import 'package:smartwaste/view/bin_update.dart';
 
+import '../model/bin.dart';
 import 'detailed_status.dart';
 
 class BinPage extends StatefulWidget {
@@ -13,63 +16,154 @@ class BinPage extends StatefulWidget {
 }
 
 class _BinPage extends State<BinPage> {
+  BinPageController _binController = BinPageController();
+
+  String binId = '';
+
+  Future<void> _showDeleteDialog(BuildContext context, Bin bin) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Bin?'),
+          content: Text('Are you sure you want to delete this bin?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Delete'),
+              onPressed: () {
+                // Delete bin and close the dialog
+                _binController.deleteBin(bin.bin_id);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Bin List'),
-        ),
-        body: ListView(children: [
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: ElevatedButton(
-                onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => BinRegisterPage(loginId: widget.loginId)),
-                  );
-                },
-                child: Text('Register New Bin')),
-          ),
-
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const detailedStatusPage()),
-              );
-              // Handle tap for CardLocation
-              print('Bin List Tapped!');
-            },
-            child: Card(
-              elevation: 4,
-              child: Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Row(
-                  children: [
-                    Icon(Icons.delete_outline, color: Colors.blue, size: 60.0),
-                    SizedBox(height: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'BIN 01',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          'Display Location',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+      appBar: AppBar(
+        title: Text('Bin List'),
+      ),
+      body: Column(children: [
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BinRegisterPage(loginId: widget.loginId),
               ),
-            ),
-          )
-        ])
+            );
+          },
+          child: Text('Register New Bin'),
+        ),
+        Expanded(
+          child: StreamBuilder<List<Bin>>(
+            stream: _binController.getBinsStream(widget.loginId),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<Bin> bins = snapshot.data!;
+                return ListView.builder(
+                  itemCount: bins.length,
+                  itemBuilder: (context, index) {
+                    Bin bin = bins[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                DetailedStatusPage(index: index),
+                          ),
+                        );
+                      },
+                      child: Card(
+                        elevation: 4,
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(Icons.delete_sharp,
+                                      color: Colors.green, size: 60.0),
+                                  SizedBox(height: 16),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        bin.alias,
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      /*Text(
+                                  bin.alias, // This one should read location
+                                  style: TextStyle(fontSize: 16),
+                                ),*/
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: Icon(Icons.edit),
+                                    onPressed: () {
+                                      binId = bins[index].bin_id;
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => BinUpdatePage(
+                                                loginId: widget.loginId,
+                                                binId: binId)),
+                                      );
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.delete),
+                                    onPressed: () {
+                                      _showDeleteDialog(context, bin);
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.call),
+                                    onPressed: () {
+                                      // Handle call action
+                                      print('Call Pressed');
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+
+                  },
+                );
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            },
+          ),
+        ),
+      ]),
     );
   }
 }

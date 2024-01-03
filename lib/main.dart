@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:smartwaste/view/homepage.dart';
-import 'package:smartwaste/view/user_login.dart';
-import 'package:smartwaste/main_page.dart';
-import 'package:smartwaste/view/bin_register.dart';
 import 'package:smartwaste/view/detailed_status.dart';
-import 'package:smartwaste/view/user_register.dart';
-//import 'package:smartwaste/welcome.dart';
+import 'package:smartwaste/view/user_login.dart';
 import 'firebase_options.dart';
 
 

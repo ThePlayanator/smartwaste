@@ -1,5 +1,10 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import '../controller/bin_controller.dart';
+import 'package:http/http.dart' as http;
+
 
 class BinRegisterPage extends StatefulWidget {
   final String loginId;
@@ -12,8 +17,44 @@ class BinRegisterPage extends StatefulWidget {
 
 class _BinRegisterPage extends State<BinRegisterPage> {
   final TextEditingController aliasController = TextEditingController();
-
   final BinPageController _newBinController = BinPageController();
+
+  dynamic temperature;
+  dynamic weight;
+
+  // Create a timer that updates the data every second
+  late Timer timer;
+  bool regResult=false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize the timer
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      // Fetch latest data of temperature and weight
+      if (mounted) {
+        _newBinController.getJsonDataT().then((resultT) {
+          setState(() {
+            temperature = resultT;
+          });
+
+          _newBinController.getJsonDataW().then((resultW) {
+            setState(() {
+              weight = resultW;
+            });
+          });
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // Cancel the timer when the widget is disposed
+    timer.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,17 +74,31 @@ class _BinRegisterPage extends State<BinRegisterPage> {
           ),
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: () {
-              _newBinController.createBin(
+            onPressed: () async {
+              temperature = _newBinController.getJsonDataT();
+              weight = _newBinController.getJsonDataW();
+              regResult = await _newBinController.createBin(
                 alias: aliasController.text,
                 id: "",
                 user_id: widget.loginId,
+                temperature: temperature,
+                weight: weight,
               );
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('New Bin Registration Successful'),
-                ),
-              );
+
+              if(regResult==true){
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('New Bin Registration Successful.'),
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('New Bin Registration Failed.'),
+                  ),
+                );
+              }
+
             },
             child: const Text('Register Bin'),
           ),

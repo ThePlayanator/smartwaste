@@ -1,44 +1,34 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:smartwaste/view/weight_graph.dart';
-import 'package:http/http.dart' as http;
+import '../controller/bin_controller.dart';
 
-class detailedStatusPage extends StatefulWidget {
-  const detailedStatusPage({super.key});
+class DetailedStatusPage extends StatefulWidget {
+  final int index;
+
+  const DetailedStatusPage({Key? key, required this.index}) : super(key: key);
 
   @override
-  State<detailedStatusPage> createState() => _detailedStatusPage();
+  State<DetailedStatusPage> createState() => _DetailedStatusPageState();
 }
 
-class _detailedStatusPage extends State<detailedStatusPage> {
-  // URL for get latest Heat data
-  final String urlT =
-      "https://api.thingspeak.com/channels/2364486/fields/1/last.json?api_key=2WBJ4ZYNMCJCAFC0&results";
+class _DetailedStatusPageState extends State<DetailedStatusPage> {
+  final BinPageController _newBinController = BinPageController();
   dynamic temperature;
-
-  // URL for latest Weight data
-  final String urlW =
-      "https://api.thingspeak.com/channels/2364486/fields/2/last.json?api_key=2WBJ4ZYNMCJCAFC0&results";
   dynamic weight;
-
-  // Create a timer that updates the data every second
   late Timer timer;
 
   @override
   void initState() {
     super.initState();
 
-    // Initialize the timer
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      // Fetch latest data of temperature and weight
       if (mounted) {
-        getJsonDataT().then((resultT) {
+        _newBinController.getJsonDataT().then((resultT) {
           setState(() {
             temperature = resultT;
           });
 
-          getJsonDataW().then((resultW) {
+          _newBinController.getJsonDataW().then((resultW) {
             setState(() {
               weight = resultW;
             });
@@ -50,63 +40,8 @@ class _detailedStatusPage extends State<detailedStatusPage> {
 
   @override
   void dispose() {
-    // Cancel the timer when the widget is disposed
     timer.cancel();
     super.dispose();
-  }
-
-  Future<String> getJsonDataT() async {
-    try {
-      var response = await http
-          .get(Uri.parse(urlT), headers: {"Accept": "application/json"});
-
-      if (response.statusCode == 200) {
-        var convertDataToJson = jsonDecode(response.body);
-
-        // Ensure the response contains the expected field name 'field1'
-        if (convertDataToJson.containsKey('field1')) {
-          temperature = convertDataToJson['field1'];
-        } else {
-          // Handle the case where 'field1' is not present in the response
-          print("Field 'field1' not found in API response");
-        }
-      } else {
-        // Handle HTTP error
-        print("HTTP Error: ${response.statusCode}");
-      }
-    } catch (e) {
-      // Handle other errors
-      print("Error fetching data: $e");
-    }
-
-    return temperature;
-  }
-
-  Future<String> getJsonDataW() async {
-    try {
-      var response = await http
-          .get(Uri.parse(urlW), headers: {"Accept": "application/json"});
-
-      if (response.statusCode == 200) {
-        var convertDataToJson = jsonDecode(response.body);
-
-        // Ensure the response contains the expected field name 'field1'
-        if (convertDataToJson.containsKey('field2')) {
-          weight = convertDataToJson['field2'];
-        } else {
-          // Handle the case where 'field1' is not present in the response
-          print("Field 'field2' not found in API response");
-        }
-      } else {
-        // Handle HTTP error
-        print("HTTP Error: ${response.statusCode}");
-      }
-    } catch (e) {
-      // Handle other errors
-      print("Error fetching data: $e");
-    }
-
-    return weight;
   }
 
   @override
@@ -114,164 +49,51 @@ class _detailedStatusPage extends State<detailedStatusPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('BIN STATUS'),
+        title: Text('BIN STATUS'),
         backgroundColor: Colors.green,
       ),
       backgroundColor: Colors.greenAccent,
       body: ListView(
+        padding: EdgeInsets.all(16.0),
         children: [
-          GestureDetector(
-            onTap: () {
-              // Handle tap for CardLocation
-              print('CardLocation tapped!');
-            },
-            child: Card(
-              elevation: 4,
-              child: Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Row(
-
-                  children: [
-                    Icon(Icons.location_on, color: Colors.red, size: 60.0),
-
-                    SizedBox(height: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-
-                      children: [
-                        Text(
-                          'Location',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Center(
-                          child: Text(
-                            'Fakulti Teknologi Maklumat dan Komu',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              // Handle tap for CardDistance
-              print('CardDistance tapped!');
-            },
-            child: Card(
-              elevation: 4,
-              child: Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Row(
-                 // crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(Icons.restore_from_trash,
-                        color: Colors.red, size: 60.0),
-                    SizedBox(height: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Full Level',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                            '20 (cm)',
-                            style: TextStyle(fontSize: 16),
-                          ),
-
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              /*Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const WeightAppPage()),
-              );*/
-              print('CardWeight tapped!');
-              print(weight);
-              // Handle tap for CardWeight
-            },
-            child: Card(
-              elevation: 4,
-              child: Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Row(
-                 // crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(Icons.scale_outlined, color: Colors.red, size: 60.0),
-                    SizedBox(height: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Center(
-                          child: Text(
-                            'Weight Level',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Text(
-                            '${weight} (g)',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              // Handle tap for CardTemperature
-              print('CardTemperature tapped!');
-              print(temperature);
-            },
-            child: Card(
-              elevation: 4,
-              child: Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Row(
-                  //crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(Icons.local_fire_department,
-                        color: Colors.red, size: 60.0),
-                    SizedBox(height: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Temperature Level',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          '${temperature} °C',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+          buildCard(Icons.location_on, 'Location',
+              'Fakulti Teknologi Maklumat dan Komu'),
+          buildCard(Icons.restore_from_trash, 'Full Level', '20 (cm)'),
+          buildCard(Icons.scale_outlined, 'Weight Level',
+              '${weight ?? _newBinController.getJsonDataW()} (g)'),
+          buildCard(Icons.local_fire_department, 'Temperature Level',
+              '${temperature ?? _newBinController.getJsonDataT()} °C'),
         ],
+      ),
+    );
+  }
+
+  Widget buildCard(IconData icon, String title, String subtitle) {
+    return Card(
+      elevation: 4,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: [
+            Icon(icon, color: Colors.red, size: 60.0),
+            const SizedBox(width: 16),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  subtitle,
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

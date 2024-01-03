@@ -20,7 +20,7 @@ class _HomePage extends State<HomePage> {
   List<Widget> get _widgetOptions {
     return [
       Text(
-        'Index 0: Home',
+        'Home',
         style: optionStyle,
       ),
       BinPage(loginId: widget.loginId),
@@ -58,7 +58,7 @@ class _HomePage extends State<HomePage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.lightGreenAccent,
+        selectedItemColor: Colors.green,
         showSelectedLabels: true,
         showUnselectedLabels: true,
         onTap: _onItemTapped,
