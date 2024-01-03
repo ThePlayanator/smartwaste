@@ -100,7 +100,7 @@ class _BinPage extends State<BinPage> {
                                   SizedBox(height: 16),
                                   Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(

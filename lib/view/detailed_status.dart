@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../controller/bin_controller.dart';
-
+import 'bin_map.dart';
 class DetailedStatusPage extends StatefulWidget {
   final int index;
 
@@ -69,30 +69,43 @@ class _DetailedStatusPageState extends State<DetailedStatusPage> {
   }
 
   Widget buildCard(IconData icon, String title, String subtitle) {
-    return Card(
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          children: [
-            Icon(icon, color: Colors.red, size: 60.0),
-            const SizedBox(width: 16),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  subtitle,
-                  style: TextStyle(fontSize: 16),
-                ),
-              ],
+    return GestureDetector(
+      onTap: () {
+        // Check if the title is 'Location', then navigate to the map page
+        if (title == 'Location') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MapPage(), // Replace with your MapPage
             ),
-          ],
+          );
+        }
+      },
+      child: Card(
+        elevation: 4,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              Icon(icon, color: Colors.red, size: 60.0),
+              const SizedBox(width: 16),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    subtitle,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
