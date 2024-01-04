@@ -29,9 +29,7 @@ class _BinUpdatePage extends State<BinUpdatePage> {
         children: <Widget>[
           const SizedBox(height: 24),
           TextField(
-            decoration: const InputDecoration(
-              labelText: "Alias",
-            ),
+            decoration: const InputDecoration(labelText: "Alias"),
             controller: aliasController,
           ),
           const SizedBox(height: 20),

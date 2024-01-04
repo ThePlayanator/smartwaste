@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../model/user.dart';
 
 class UserPageController {
-
   // Method to create a user
   Future<void> createUser({
     required String username,
@@ -11,13 +10,12 @@ class UserPageController {
     required String ic,
     required String phoneNumber,
     required String id,
-
   }) async {
     // Create user id with auto increment
     try {
       // Get the total number of id in the users collection
       CollectionReference collectionReference =
-      FirebaseFirestore.instance.collection('users');
+          FirebaseFirestore.instance.collection('users');
 
       QuerySnapshot querySnapshot = await collectionReference.get();
       int numberOfDocuments = querySnapshot.size;
@@ -130,6 +128,106 @@ class UserPageController {
     } catch (e) {
       print('Error during login: $e');
       return 'Failed to retrieve user ID';
+    }
+  }
+
+  Future<List<String>> getUserDetails({required String user_id}) async {
+    try {
+      List<String> result = [];
+      int i = 0;
+
+      DocumentSnapshot getDocs = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user_id)
+          .get();
+
+      if (getDocs.exists) {
+        //Get a Map of all the fields and their value
+        Map<String, dynamic> data = getDocs.data() as Map<String, dynamic>;
+
+        // Create a Map to store the values for each field
+        Map<String,String> fieldValues = {
+          'fullname' : '',
+          'ic' : '',
+          'phoneNumber' : '',
+          'username' : '',
+          'password' : '',
+        };
+
+        // Iterate through the specific fields and retrieve their values
+        for (String field in data.keys) {
+          dynamic value = data[field];
+
+          // Check if the field is for fullname,ic or phoneNumber
+          if (fieldValues.containsKey(field)){
+            // Convert the value to string and store it in the fieldValue
+            fieldValues[field] = value.toString();
+          }
+        }
+
+        // Add values to the result array in the desired order
+        result.add(fieldValues['fullname']!);
+        result.add(fieldValues['ic']!);
+        result.add(fieldValues['phoneNumber']!);
+        result.add(fieldValues['username']!);
+        result.add(fieldValues['password']!);
+      }
+      print(result);
+      return result;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<bool> updateProfile(String user_id, String fullname, String ic, String phoneNumber) async {
+    try {
+      // Reference the document directly using the user_id
+      DocumentReference userRef = FirebaseFirestore.instance.collection('users').doc(user_id);
+
+      // Update the specified fields
+      await userRef.update({
+        'fullname': fullname,
+        'ic': ic,
+        'phoneNumber': phoneNumber,
+      });
+
+      print('Update successful');
+      return true;
+    } catch (e) {
+      print('Error updating profile: $e');
+      // Handle the error accordingly
+      return false;
+    }
+  }
+
+  Future<bool> updatePrivacy(String user_id, String username, String password) async {
+    try {
+      // Reference the document directly using the user_id
+      DocumentReference userRef = FirebaseFirestore.instance.collection('users').doc(user_id);
+
+      // Update the specified fields
+      await userRef.update({
+        'username' : username,
+        'password' : password,
+      });
+
+      print('Update successful');
+      return true;
+    } catch (e) {
+      print('Error updating profile: $e');
+      // Handle the error accordingly
+      return false;
+    }
+  }
+
+  Future<bool> deleteProfile(String user_id) async {
+    try {
+      await FirebaseFirestore.instance.collection('users').doc(user_id).delete();
+      return true;
+    } catch (e) {
+      print('Error deleting bin: $e');
+      return false;
+      // Handle the error accordingly
     }
   }
 

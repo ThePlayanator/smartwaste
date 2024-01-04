@@ -23,7 +23,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login Page'),
+        title: Text('Login'),
+        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -32,19 +33,25 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             TextField(
               controller: usernameController,
-              decoration: InputDecoration(labelText: 'Username'),
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Username',
+                  icon: Icon(Icons.person)),
             ),
+            const SizedBox(height: 16),
             TextField(
               controller: passwordController,
               obscureText: true,
-              decoration: InputDecoration(labelText: 'Password'),
+              decoration: InputDecoration(labelText: 'Password',
+              border: OutlineInputBorder(),
+              icon: Icon(Icons.lock_outline)),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               errorMessage,
               style: TextStyle(color: Colors.red),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 // Validate username and password

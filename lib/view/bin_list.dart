@@ -51,9 +51,6 @@ class _BinPage extends State<BinPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Bin List'),
-      ),
       body: Column(children: [
         ElevatedButton(
           onPressed: () {

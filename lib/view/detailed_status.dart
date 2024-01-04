@@ -49,7 +49,7 @@ class _DetailedStatusPageState extends State<DetailedStatusPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('BIN STATUS'),
+        title: const Text('Bin Status'),
         backgroundColor: Colors.green,
       ),
       backgroundColor: Colors.greenAccent,

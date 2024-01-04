@@ -24,7 +24,7 @@ class _HomePage extends State<HomePage> {
         style: optionStyle,
       ),
       BinPage(loginId: widget.loginId),
-      SettingsPage(),
+      SettingsPage(loginId: widget.loginId),
     ];
   }
   void _onItemTapped(int index) {
