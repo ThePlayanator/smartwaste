@@ -192,4 +192,33 @@ class BinPageController {
     return weight;
   }
 
+  Future<String> getJsonDataF() async {
+    final String urlW =
+        "https://api.thingspeak.com/channels/2364486/fields/3/last.json?api_key=2WBJ4ZYNMCJCAFC0&results";
+    dynamic full;
+    try {
+      var response = await http
+          .get(Uri.parse(urlW), headers: {"Accept": "application/json"});
+
+      if (response.statusCode == 200) {
+        var convertDataToJson = jsonDecode(response.body);
+
+        // Ensure the response contains the expected field name 'field1'
+        if (convertDataToJson.containsKey('field3')) {
+          full = convertDataToJson['field3'];
+        } else {
+          // Handle the case where 'field1' is not present in the response
+          print("Field 'field2' not found in API response");
+        }
+      } else {
+        // Handle HTTP error
+        print("HTTP Error: ${response.statusCode}");
+      }
+    } catch (e) {
+      // Handle other errors
+      print("Error fetching data: $e");
+    }
+    return full;
+  }
+
 }

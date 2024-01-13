@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+//import 'package:intl/intl.dart';
 import 'package:smartwaste/controller/bin_controller.dart';
+import 'package:smartwaste/controller/schedule_controller.dart';
 import 'package:smartwaste/view/bin_register.dart';
 import 'package:smartwaste/view/bin_update.dart';
 
@@ -16,9 +18,17 @@ class BinPage extends StatefulWidget {
 }
 
 class _BinPage extends State<BinPage> {
-  BinPageController _binController = BinPageController();
+  final BinPageController _binController = BinPageController();
+  final SchedulePageController _scheduleController = SchedulePageController();
 
   String binId = '';
+  String scheduleId = '';
+  String status='Pickup';
+  //int currentTimestamp =DateTime.now().microsecondsSinceEpoch;
+  //DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(currentTimestamp);
+  //DateFormat dateFormat = DateFormat('yy/MM/dd HH:mm');
+  //String formattedDateTime = dateFormat.format(dateTime);
+  bool pickupResult = false;
 
   Future<void> _showDeleteDialog(BuildContext context, Bin bin) async {
     return showDialog<void>(
@@ -137,9 +147,13 @@ class _BinPage extends State<BinPage> {
                                   ),
                                   IconButton(
                                     icon: Icon(Icons.call),
-                                    onPressed: () {
-                                      // Handle call action
-                                      print('Call Pressed');
+                                    onPressed: () async {
+                                      int date = DateTime.now().microsecondsSinceEpoch;
+                                      pickupResult = await _scheduleController.createPickup(
+                                          date: date.toString(),
+                                          status: status,
+                                          id: scheduleId
+                                      );
                                     },
                                   ),
                                 ],

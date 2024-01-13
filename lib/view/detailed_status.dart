@@ -15,6 +15,7 @@ class _DetailedStatusPageState extends State<DetailedStatusPage> {
   final BinPageController _newBinController = BinPageController();
   dynamic temperature;
   dynamic weight;
+  dynamic full;
   late Timer timer;
 
   @override
@@ -27,11 +28,17 @@ class _DetailedStatusPageState extends State<DetailedStatusPage> {
           setState(() {
             temperature = resultT;
           });
+        });
 
-          _newBinController.getJsonDataW().then((resultW) {
-            setState(() {
-              weight = resultW;
-            });
+        _newBinController.getJsonDataW().then((resultW) {
+          setState(() {
+            weight = resultW;
+          });
+        });
+
+        _newBinController.getJsonDataF().then((resultF) {
+          setState(() {
+            full = resultF;
           });
         });
       }
@@ -58,7 +65,8 @@ class _DetailedStatusPageState extends State<DetailedStatusPage> {
         children: [
           buildCard(Icons.location_on, 'Location',
               'Fakulti Teknologi Maklumat dan Komu'),
-          buildCard(Icons.restore_from_trash, 'Full Level', '20 (cm)'),
+          buildCard(Icons.restore_from_trash, 'Full Level',
+              '${full ?? _newBinController.getJsonDataF()}(cm)'),
           buildCard(Icons.scale_outlined, 'Weight Level',
               '${weight ?? _newBinController.getJsonDataW()} (g)'),
           buildCard(Icons.local_fire_department, 'Temperature Level',
