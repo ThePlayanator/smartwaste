@@ -4,6 +4,7 @@ class Bin{
   String user_id;
   String temperature;
   String weight;
+  String fill_level;
 
   Bin({
     this.bin_id= '',
@@ -11,6 +12,7 @@ class Bin{
     required this.user_id,
     required this.temperature,
     required this.weight,
+    required this.fill_level,
   });
 
   // Named constructor to create a Bin instance from a JSON object
@@ -21,6 +23,7 @@ class Bin{
       user_id: json['user_id'] ?? '',
       temperature: json['temperature'] ?? '',
       weight: json['weight'] ?? '',
+      fill_level: json['fill_level'] ?? '',
     );
   }
 
@@ -30,5 +33,6 @@ class Bin{
     'user_id' : user_id,
     'temperature' : temperature,
     'weight' : weight,
+    'fill_level': fill_level,
   };
 }

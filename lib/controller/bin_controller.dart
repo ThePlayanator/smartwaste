@@ -14,6 +14,7 @@ class BinPageController {
     required String user_id,
     required String temperature,
     required String weight,
+    required String fill_level,
   }) async {
     // Create user id with auto increment
     try {
@@ -71,6 +72,7 @@ class BinPageController {
         user_id: user_id,
         temperature: temperature,
         weight: weight,
+        fill_level: fill_level,
       );
 
       // Set the desired path of a collection

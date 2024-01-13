@@ -21,6 +21,7 @@ class _BinRegisterPage extends State<BinRegisterPage> {
 
   dynamic temperature;
   dynamic weight;
+  dynamic fill_level;
 
   // Create a timer that updates the data every second
   late Timer timer;
@@ -38,13 +39,20 @@ class _BinRegisterPage extends State<BinRegisterPage> {
           setState(() {
             temperature = resultT;
           });
+        });
 
-          _newBinController.getJsonDataW().then((resultW) {
-            setState(() {
-              weight = resultW;
-            });
+        _newBinController.getJsonDataW().then((resultW) {
+          setState(() {
+            weight = resultW;
           });
         });
+
+        _newBinController.getJsonDataF().then((resultF) {
+          setState(() {
+            fill_level = resultF;
+          });
+        });
+        
       }
     });
   }
@@ -77,12 +85,14 @@ class _BinRegisterPage extends State<BinRegisterPage> {
             onPressed: () async {
               temperature = _newBinController.getJsonDataT();
               weight = _newBinController.getJsonDataW();
+              fill_level= _newBinController.getJsonDataF();
               regResult = await _newBinController.createBin(
                 alias: aliasController.text,
                 id: "",
                 user_id: widget.loginId,
                 temperature: temperature,
                 weight: weight,
+                fill_level: fill_level,
               );
 
               if(regResult==true){
