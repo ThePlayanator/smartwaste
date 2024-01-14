@@ -3,7 +3,7 @@ import '../model/user.dart';
 
 class UserPageController {
   // Method to create a user
-  Future<void> createUser({
+  Future<bool> createUser({
     required String username,
     required String password,
     required String fullname,
@@ -59,26 +59,28 @@ class UserPageController {
         String formattedInteger = idplacholder.toString().padLeft(5, '0');
         id = leading + formattedInteger;
       }
+
+      // Create instance of User class and initialize its properties with values
+      // passed as arguments
+      final User user = User(
+        username: username,
+        password: password,
+        fullname: fullname,
+        ic: ic,
+        phoneNumber: phoneNumber,
+        user_id: id,
+      );
+
+      // Set the desired path of a collection
+      final docUser = FirebaseFirestore.instance.collection('users');
+      // Convert data to Json method and write into database
+      final json = user.toJson();
+      await docUser.doc(id).set(json);
+      return true;
     } catch (e) {
       print('Error checking collection: $e');
+      return false;
     }
-
-    // Create instance of User class and initialize its properties with values
-    // passed as arguments
-    final User user = User(
-      username: username,
-      password: password,
-      fullname: fullname,
-      ic: ic,
-      phoneNumber: phoneNumber,
-      user_id: id,
-    );
-
-    // Set the desired path of a collection
-    final docUser = FirebaseFirestore.instance.collection('users');
-    // Convert data to Json method and write into database
-    final json = user.toJson();
-    await docUser.doc(id).set(json);
   }
 
   // Handles user login
@@ -146,12 +148,12 @@ class UserPageController {
         Map<String, dynamic> data = getDocs.data() as Map<String, dynamic>;
 
         // Create a Map to store the values for each field
-        Map<String,String> fieldValues = {
-          'fullname' : '',
-          'ic' : '',
-          'phoneNumber' : '',
-          'username' : '',
-          'password' : '',
+        Map<String, String> fieldValues = {
+          'fullname': '',
+          'ic': '',
+          'phoneNumber': '',
+          'username': '',
+          'password': '',
         };
 
         // Iterate through the specific fields and retrieve their values
@@ -159,7 +161,7 @@ class UserPageController {
           dynamic value = data[field];
 
           // Check if the field is for fullname,ic or phoneNumber
-          if (fieldValues.containsKey(field)){
+          if (fieldValues.containsKey(field)) {
             // Convert the value to string and store it in the fieldValue
             fieldValues[field] = value.toString();
           }
@@ -179,10 +181,12 @@ class UserPageController {
     }
   }
 
-  Future<bool> updateProfile(String user_id, String fullname, String ic, String phoneNumber) async {
+  Future<bool> updateProfile(
+      String user_id, String fullname, String ic, String phoneNumber) async {
     try {
       // Reference the document directly using the user_id
-      DocumentReference userRef = FirebaseFirestore.instance.collection('users').doc(user_id);
+      DocumentReference userRef =
+          FirebaseFirestore.instance.collection('users').doc(user_id);
 
       // Update the specified fields
       await userRef.update({
@@ -200,15 +204,17 @@ class UserPageController {
     }
   }
 
-  Future<bool> updatePrivacy(String user_id, String username, String password) async {
+  Future<bool> updatePrivacy(
+      String user_id, String username, String password) async {
     try {
       // Reference the document directly using the user_id
-      DocumentReference userRef = FirebaseFirestore.instance.collection('users').doc(user_id);
+      DocumentReference userRef =
+          FirebaseFirestore.instance.collection('users').doc(user_id);
 
       // Update the specified fields
       await userRef.update({
-        'username' : username,
-        'password' : password,
+        'username': username,
+        'password': password,
       });
 
       print('Update successful');
@@ -222,7 +228,10 @@ class UserPageController {
 
   Future<bool> deleteProfile(String user_id) async {
     try {
-      await FirebaseFirestore.instance.collection('users').doc(user_id).delete();
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user_id)
+          .delete();
       return true;
     } catch (e) {
       print('Error deleting bin: $e');
@@ -230,5 +239,4 @@ class UserPageController {
       // Handle the error accordingly
     }
   }
-
 }

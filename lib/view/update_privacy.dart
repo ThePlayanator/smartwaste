@@ -90,6 +90,9 @@ class _UpdatePrivacyPage extends State<UpdatePrivacyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Smart Waste'),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: <Widget>[

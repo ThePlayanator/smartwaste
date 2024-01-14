@@ -18,6 +18,7 @@ class _UserRegisterViewState extends State<UserRegisterView> {
   final UserPageController _newUserController = UserPageController();
 
   String errorMessage = '';
+  bool regStatus=false;
 
   @override
   Widget build(BuildContext context) {
@@ -67,12 +68,12 @@ class _UserRegisterViewState extends State<UserRegisterView> {
           ),
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: () {
-
-              if (usernameController.text.isEmpty || passwordController.text.isEmpty
-              || fullnameController.text.isEmpty || icController.text.isEmpty ||
-              phoneNumberController.text.isEmpty)
-              {
+            onPressed: () async {
+              if (usernameController.text.isEmpty ||
+                  passwordController.text.isEmpty
+                  || fullnameController.text.isEmpty ||
+                  icController.text.isEmpty ||
+                  phoneNumberController.text.isEmpty) {
                 setState(() {
                   errorMessage = 'All fields cannot be empty.';
                 });
@@ -84,19 +85,29 @@ class _UserRegisterViewState extends State<UserRegisterView> {
                 errorMessage = '';
               });
 
-              _newUserController.createUser(
-                  username: usernameController.text,
-                  password: passwordController.text,
-                  fullname: fullnameController.text,
-                  ic: icController.text,
-                  phoneNumber: phoneNumberController.text,
-                  id: "",
+              regStatus = await _newUserController.createUser(
+                username: usernameController.text,
+                password: passwordController.text,
+                fullname: fullnameController.text,
+                ic: icController.text,
+                phoneNumber: phoneNumberController.text,
+                id: "",
               );
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Registration Successful'),
-                ),
-              );
+
+              if (regStatus == true) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Registration Successful'),
+                  ),
+                );
+                Navigator.pop(context);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Registration Failed'),
+                  ),
+                );
+              }
             },
             child: const Text('Register'),
           ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';
 import 'package:smartwaste/controller/bin_controller.dart';
 import 'package:smartwaste/controller/schedule_controller.dart';
 import 'package:smartwaste/view/bin_register.dart';
@@ -56,6 +56,19 @@ class _BinPage extends State<BinPage> {
         );
       },
     );
+  }
+
+  String formatTimestamp(int timestamp) {
+    // Create a DateTime object from the timestamp
+    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+
+    // Define the date and time format
+    DateFormat dateFormat = DateFormat('yy/MM/dd HH:mm');
+
+    // Format the DateTime object
+    String formattedDateTime = dateFormat.format(dateTime);
+
+    return formattedDateTime;
   }
 
   @override
@@ -149,8 +162,10 @@ class _BinPage extends State<BinPage> {
                                     icon: Icon(Icons.call),
                                     onPressed: () async {
                                       int date = DateTime.now().microsecondsSinceEpoch;
+                                      String formattedDateTime = formatTimestamp(date);
+                                      print(formattedDateTime);
                                       pickupResult = await _scheduleController.createPickup(
-                                          date: date.toString(),
+                                          date: formattedDateTime,
                                           status: status,
                                           id: scheduleId
                                       );

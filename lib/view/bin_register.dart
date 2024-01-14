@@ -52,7 +52,7 @@ class _BinRegisterPage extends State<BinRegisterPage> {
             fill_level = resultF;
           });
         });
-        
+
       }
     });
   }
