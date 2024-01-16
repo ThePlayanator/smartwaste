@@ -19,52 +19,132 @@ class _UserRegisterViewState extends State<UserRegisterView> {
 
   String errorMessage = '';
   bool regStatus=false;
+  bool obscureText=true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Register New User'),
+        backgroundColor: Colors.lightGreen,
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: <Widget>[
           const SizedBox(height: 24),
-          TextField(
-            decoration: const InputDecoration(labelText: "Username",
-            border: OutlineInputBorder(),
-                icon: Icon(Icons.person)),
-            controller: usernameController,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: TextField(
+              controller: usernameController,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.lightGreen),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  hintText: 'Username',
+                  fillColor: Colors.grey[200],
+                  filled: true,
+                  icon: Icon(Icons.person)),
+            ),
           ),
           const SizedBox(height: 24),
-          TextField(
-            decoration: const InputDecoration(labelText: "Password",
-                border: OutlineInputBorder(),
-                icon: Icon(Icons.lock_outline_rounded)),
-            controller: passwordController,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: TextField(
+              controller: passwordController,
+              obscureText: obscureText,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.lightGreen),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                hintText: 'Password',
+                fillColor: Colors.grey[200],
+                filled: true,
+                icon: Icon(Icons.lock_outline_rounded),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    Icons.visibility,
+                    color: Colors.grey,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      obscureText = !obscureText;
+                    });
+                  },
+                ),
+              ),
+            ),
           ),
           const SizedBox(height: 24),
-          TextField(
-            decoration: const InputDecoration(labelText: "Fullname",
-                border: OutlineInputBorder(),
-                icon: Icon(Icons.abc)),
-            controller: fullnameController,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: TextField(
+              controller: fullnameController,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.lightGreen),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  hintText: 'Fullname',
+                  fillColor: Colors.grey[200],
+                  filled: true,
+                  icon: Icon(Icons.abc)),
+            ),
           ),
           const SizedBox(height: 24),
-          TextField(
-            decoration: const InputDecoration(labelText: "IC Number",
-                border: OutlineInputBorder(),
-              icon: Icon(Icons.credit_card)),
-            keyboardType: TextInputType.number,
-            controller: icController,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: TextField(
+              controller: icController,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.lightGreen),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  hintText: 'IC Number',
+                  fillColor: Colors.grey[200],
+                  filled: true,
+                  icon: Icon(Icons.credit_card)),
+            ),
           ),
           const SizedBox(height: 24),
-          TextField(
-            decoration: const InputDecoration(labelText: "Phone Number",
-                border: OutlineInputBorder(),
-              icon: Icon(Icons.phone_android)),
-            keyboardType: TextInputType.number,
-            controller: phoneNumberController,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: TextField(
+              controller: phoneNumberController,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.lightGreen),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  hintText: 'Phone Number',
+                  fillColor: Colors.grey[200],
+                  filled: true,
+                  icon: Icon(Icons.phone_android)),
+            ),
           ),
           const SizedBox(height: 20),
           ElevatedButton(
@@ -109,6 +189,11 @@ class _UserRegisterViewState extends State<UserRegisterView> {
                 );
               }
             },
+            style: ButtonStyle(
+              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                EdgeInsets.symmetric(vertical: 10, horizontal: 20), // Adjust the padding here
+              ),
+            ),
             child: const Text('Register'),
           ),
         ],

@@ -3,8 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import '../controller/bin_controller.dart';
-import 'package:http/http.dart' as http;
-
 
 class BinRegisterPage extends StatefulWidget {
   final String loginId;
@@ -83,9 +81,9 @@ class _BinRegisterPage extends State<BinRegisterPage> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () async {
-              temperature = _newBinController.getJsonDataT();
-              weight = _newBinController.getJsonDataW();
-              fill_level= _newBinController.getJsonDataF();
+              temperature = await _newBinController.getJsonDataT();
+              weight = await _newBinController.getJsonDataW();
+              fill_level= await _newBinController.getJsonDataF();
               regResult = await _newBinController.createBin(
                 alias: aliasController.text,
                 id: "",
@@ -94,6 +92,7 @@ class _BinRegisterPage extends State<BinRegisterPage> {
                 weight: weight,
                 fill_level: fill_level,
               );
+              print(regResult);
 
               if(regResult==true){
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -101,6 +100,7 @@ class _BinRegisterPage extends State<BinRegisterPage> {
                     content: Text('New Bin Registration Successful.'),
                   ),
                 );
+                Navigator.pop(context);
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(

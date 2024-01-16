@@ -104,6 +104,7 @@ class _UpdateProfilePage extends State<UpdateProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Smart Waste'),
+        backgroundColor: Colors.lightGreen,
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),

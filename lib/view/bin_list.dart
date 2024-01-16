@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+//import 'package:intl/intl.dart';
 import 'package:smartwaste/controller/bin_controller.dart';
 import 'package:smartwaste/controller/schedule_controller.dart';
 import 'package:smartwaste/view/bin_register.dart';
@@ -24,10 +24,6 @@ class _BinPage extends State<BinPage> {
   String binId = '';
   String scheduleId = '';
   String status='Pickup';
-  //int currentTimestamp =DateTime.now().microsecondsSinceEpoch;
-  //DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(currentTimestamp);
-  //DateFormat dateFormat = DateFormat('yy/MM/dd HH:mm');
-  //String formattedDateTime = dateFormat.format(dateTime);
   bool pickupResult = false;
 
   Future<void> _showDeleteDialog(BuildContext context, Bin bin) async {
@@ -56,19 +52,6 @@ class _BinPage extends State<BinPage> {
         );
       },
     );
-  }
-
-  String formatTimestamp(int timestamp) {
-    // Create a DateTime object from the timestamp
-    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
-
-    // Define the date and time format
-    DateFormat dateFormat = DateFormat('yy/MM/dd HH:mm');
-
-    // Format the DateTime object
-    String formattedDateTime = dateFormat.format(dateTime);
-
-    return formattedDateTime;
   }
 
   @override
@@ -161,13 +144,26 @@ class _BinPage extends State<BinPage> {
                                   IconButton(
                                     icon: Icon(Icons.call),
                                     onPressed: () async {
-                                      int date = DateTime.now().microsecondsSinceEpoch;
-                                      String formattedDateTime = formatTimestamp(date);
-                                      print(formattedDateTime);
+                                      DateTime date = DateTime.now();
+                                      String formattedTime = "${date.year}-${date.month}-${date.day} ${date.hour}:${date.minute}";
+                                      if(date.weekday == 6 || date.weekday == 7){
+                                        const snackBar = SnackBar(
+                                            content: Text("No pickup will be done on weekend")
+                                        );
+                                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                      }
+                                      if(date.hour < 8 || date.hour > 18 ){
+                                        const snackBar = SnackBar(
+                                            content: Text("No pickup will be done before 8am and after 6pm")
+                                        );
+                                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                      }
                                       pickupResult = await _scheduleController.createPickup(
-                                          date: formattedDateTime,
-                                          status: status,
-                                          id: scheduleId
+                                        date: formattedTime,
+                                        status: false,
+                                        id: scheduleId,
+                                        driver_Id: " ",
+                                        bin_Id: bin.bin_id,
                                       );
                                     },
                                   ),

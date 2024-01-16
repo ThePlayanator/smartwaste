@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smartwaste/view/home_display.dart';
 import 'package:smartwaste/view/settings.dart';
 
 import 'bin_list.dart';
@@ -19,10 +20,7 @@ class _HomePage extends State<HomePage> {
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   List<Widget> get _widgetOptions {
     return [
-      Text(
-        'Home',
-        style: optionStyle,
-      ),
+      HomeScreen(),
       BinPage(loginId: widget.loginId),
       SettingsPage(loginId: widget.loginId),
     ];
@@ -37,7 +35,9 @@ class _HomePage extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.lightGreen,
         title: const Text('Smart Waste'),
+        
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),

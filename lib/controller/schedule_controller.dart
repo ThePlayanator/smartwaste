@@ -8,14 +8,16 @@ class SchedulePageController {
   // Method to create a user
   Future<bool> createPickup({
     required String date,
-    required String status,
+    required bool status,
     required String id,
+    required String driver_Id,
+    required String bin_Id
   }) async {
     // Create user id with auto increment
     try {
       // Get the total number of id in the users collection
       CollectionReference collectionReference =
-          FirebaseFirestore.instance.collection('Schedule');
+      FirebaseFirestore.instance.collection('Schedule');
 
       QuerySnapshot querySnapshot = await collectionReference.get();
       int numberOfDocuments = querySnapshot.size;
@@ -63,9 +65,11 @@ class SchedulePageController {
       // Create instance of Schedule class and initialize its properties with values
       // passed as arguments
       final Schedule pickup = Schedule(
-        schedule_id: id,
-        date: date,
-        status: status,
+          schedule_id: id,
+          date: date,
+          status: status,
+          driver_Id: driver_Id,
+          bin_Id: bin_Id
       );
 
       // Set the desired path of a collection

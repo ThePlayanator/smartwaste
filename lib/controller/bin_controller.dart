@@ -75,6 +75,7 @@ class BinPageController {
         fill_level: fill_level,
       );
 
+      print(id);
       // Set the desired path of a collection
       final docUser = FirebaseFirestore.instance.collection('bin');
       // Convert data to Json method and write into database

@@ -1,17 +1,17 @@
+/*
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:smartwaste/view/homepage.dart';
 import 'package:smartwaste/view/user_register.dart';
 import '../controller/user_controller.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class ResetPasswordPage extends StatefulWidget {
+  const ResetPasswordPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _ResetPasswordPageState createState() => _ResetPasswordPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _ResetPasswordPageState extends State<ResetPasswordPage> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final UserPageController _loginController = UserPageController();
@@ -26,19 +26,10 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       //backgroundColor: Colors.lightGreen.shade100,
       appBar: AppBar(
+        title: Text('Reset Password'),
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.lightGreen,
-        title: Text(
-          'WASTE WISE',
-         /* style: GoogleFonts.palanquinDark(
-            textStyle: TextStyle(
-              fontSize: 40, // Adjust the font size as needed
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),*/
-        ),
       ),
-
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -117,16 +108,13 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 10),
                 Text(
                   errorMessage,
                   style: TextStyle(color: Colors.red),
                 ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 20),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.lightGreen.shade100,
-                  ),
                   onPressed: () async {
                     // Validate username and password
                     if (usernameController.text.isEmpty ||
@@ -167,10 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                       });
                     }
                   },
-                  child: Text('Login',
-                  style: TextStyle(
-                    color: Colors.black,
-                  )),
+                  child: Text('Login'),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -207,3 +192,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+*/
