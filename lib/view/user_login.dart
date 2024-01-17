@@ -26,17 +26,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       //backgroundColor: Colors.lightGreen.shade100,
       appBar: AppBar(
-        backgroundColor: Colors.lightGreen,
-        title: Text(
-          'WASTE WISE',
-         /* style: GoogleFonts.palanquinDark(
-            textStyle: TextStyle(
-              fontSize: 40, // Adjust the font size as needed
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),*/
-        ),
+          title: Image.asset('assets/wastewise.png', height: 45)
       ),
 
       body: SafeArea(

@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:marquee/marquee.dart';
 import '../controller/bin_controller.dart';
 import 'bin_map.dart';
+
+
 class DetailedStatusPage extends StatefulWidget {
   final int index;
 
@@ -29,18 +30,33 @@ class _DetailedStatusPageState extends State<DetailedStatusPage> {
           setState(() {
             temperature = resultT;
           });
+          double temperatureT = double.parse(temperature);
+          if(temperatureT>=40)
+          {
+            _newBinController.SendNotificationTemperature();
+          }
         });
 
         _newBinController.getJsonDataW().then((resultW) {
           setState(() {
             weight = resultW;
           });
+          double weightW = double.parse(weight);
+          if(weightW>=5000)
+          {
+            _newBinController.SendNotificationWeight();
+          }
         });
 
         _newBinController.getJsonDataF().then((resultF) {
           setState(() {
             full = resultF;
           });
+          double fullF = double.parse(full);
+          if(fullF<=2)
+          {
+            _newBinController.SendNotificationFull();
+          }
         });
       }
     });
@@ -64,7 +80,7 @@ class _DetailedStatusPageState extends State<DetailedStatusPage> {
         padding: EdgeInsets.all(16.0),
         children: [
           buildCard(Icons.location_on, 'Location',
-              'Fakulti Teknologi Maklumat dan Komunikasi (FTMK) UTeM'),
+              'FTMK'),
           buildCard(Icons.restore_from_trash, 'Full Level',
               '${full ?? _newBinController.getJsonDataF()}(cm)'),
           buildCard(Icons.scale_outlined, 'Weight Level',
@@ -106,23 +122,7 @@ class _DetailedStatusPageState extends State<DetailedStatusPage> {
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
-                  // Wrap the Text widget with Marquee for the 'Location' card
-                  title == 'Location'
-                      ? Marquee(
-                    text: subtitle,
-                    style: TextStyle(fontSize: 16),
-                    scrollAxis: Axis.horizontal,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    blankSpace: 20.0,
-                    velocity: 30.0,
-                    pauseAfterRound: Duration(seconds: 1),
-                    startPadding: 10.0,
-                    accelerationDuration: Duration(seconds: 1),
-                    accelerationCurve: Curves.linear,
-                    decelerationDuration: Duration(milliseconds: 500),
-                    decelerationCurve: Curves.easeOut,
-                  )
-                      : Text(
+                  Text(
                     subtitle,
                     style: TextStyle(fontSize: 16),
                   ),
